@@ -1,0 +1,6 @@
+{
+  "port": 3100,
+  "serverAPIDomain": "http://production/api",
+  "cdnDomain": "https://static.com/",
+  "baseUrl": "/"
+}
