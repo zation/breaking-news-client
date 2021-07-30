@@ -4,35 +4,10 @@ import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import getConfig from 'relient/config';
-import { find, flow, prop, propEq } from 'lodash/fp';
 import handleError from './middlewares/handle-error';
 import render from './middlewares/render';
 import healthCheck from './middlewares/health-check';
 import logger from './logger';
-
-const defaultExchangeRate = {
-  USDtoJPY: 111.22,
-  USDtoCNY: 6.8,
-  USDtoKRW: 1114.33,
-  USDtoBTC: 0.00015,
-  USDtoBCH: 0.0019,
-};
-global.exchangeRate = defaultExchangeRate;
-
-const updateExchangeRate = async () => {
-  const response = await fetch(`${getConfig('serverAPIDomain')}/exchange-rate/all`);
-  const exchangeRates = await response.json();
-  global.exchangeRate.USDtoJPY = flow(find(propEq('name', 'JPY')), prop('rate'))(exchangeRates);
-  global.exchangeRate.USDtoCNY = flow(find(propEq('name', 'CNY')), prop('rate'))(exchangeRates);
-  global.exchangeRate.USDtoKRW = flow(find(propEq('name', 'KRW')), prop('rate'))(exchangeRates);
-  global.exchangeRate.USDtoBTC = flow(find(propEq('name', 'BTC')), prop('rate'))(exchangeRates);
-  global.exchangeRate.USDtoBCH = flow(find(propEq('name', 'BCH')), prop('rate'))(exchangeRates);
-  global.exchangeRate = { ...defaultExchangeRate, ...global.exchangeRate };
-};
-
-const HALF_HOUR = 1000 * 60 * 30;
-updateExchangeRate();
-setInterval(updateExchangeRate, HALF_HOUR);
 
 const app = express();
 

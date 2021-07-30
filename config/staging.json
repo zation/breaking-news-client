@@ -1,6 +1,6 @@
 {
   "port": 3100,
-  "serverAPIDomain": "http://linkhash.stonelens.com/api",
+  "serverAPIDomain": "http://tipster.stonelens.com/api",
   "cdnDomain": "https://static.com/",
   "baseUrl": "/"
 }

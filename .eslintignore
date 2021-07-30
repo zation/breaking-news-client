@@ -23,4 +23,4 @@ yarn-error.log*
 # Misc
 .DS_Store
 
-/src/shared/ant-design-pro/
+/src/libs
