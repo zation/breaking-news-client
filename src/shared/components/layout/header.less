@@ -2,5 +2,44 @@
 @import '../mixins';
 
 .Root {
-  background: @primary-color;
+  background: #272930;
+}
+
+.Content {
+  width: @desktop-max-width;
+  height: 80px;
+  margin: 0 auto;
+}
+
+.Logo {
+  color: white;
+  font-size: 24px;
+}
+
+.LogoContainer {
+  border-right: 1px solid #33353c;
+}
+
+.ButtonContainer {
+  padding: 0 20px;
+  border-right: 1px solid #33353c;
+  border-left: 1px solid #33353c;
+}
+
+.Search {
+  background-color: #202228;
+  border: 1px solid #202228 !important;
+  box-shadow: none;
+  margin: 0 40px;
+  width: 400px;
+
+  .SearchIcon {
+    color: white;
+    font-size: 18px;
+  }
+
+  input {
+    color: white;
+    background-color: #202228;
+  }
 }
