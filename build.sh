@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-REPOSITORY=registry.cn-beijing.aliyuncs.com/vlinkbtc/tipster
+REPOSITORY=registry.cn-beijing.aliyuncs.com/vlinkbtc/breaking-news-client
 CI_BUILD_TAG=${1:-latest}
 ENV=${2:-production}
-CONTAINER=tipster
+CONTAINER=breaking-news-client
 
 yarn
 NODE_ENV=production yarn build
