@@ -23,6 +23,7 @@ yarn-error.log*
 !.vscode/extensions.json
 
 src/libs
+build.sh
 
 # Misc
 .DS_Store
