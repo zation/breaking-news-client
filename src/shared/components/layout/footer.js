@@ -10,7 +10,7 @@ const result = ({ className }) => {
 
   return (
     <div className={classNames(className, s.Root)}>
-      Footer
+      © 2021 Breaking News. All Rights Reserved
     </div>
   );
 };
