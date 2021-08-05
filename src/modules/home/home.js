@@ -1,6 +1,11 @@
 import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import Layout from 'shared/components/layout';
 import useStyles from 'isomorphic-style-loader/useStyles';
+import { Row, Col } from 'antd';
+import Viewpoint from 'shared/components/viewpoint';
+import { map } from 'lodash/fp';
+import selector from './home-selector';
 import abi from './abi';
 
 import s from './home.less';
@@ -26,10 +31,25 @@ const result = () => {
       run();
     }
   }, []);
+  const {
+    news,
+  } = useSelector(selector);
 
   return (
     <Layout className={s.Root}>
-      Home
+      <Row>
+        <Col offset={5} span={14} className={s.Content}>
+          {map((newsItem) => (
+            <Viewpoint
+              key={newsItem.id}
+              viewpoint={newsItem}
+              canSupport
+              supportCount={newsItem.supportCount}
+              notSupportCount={newsItem.notSupportCount}
+            />
+          ))(news)}
+        </Col>
+      </Row>
     </Layout>
   );
 };
