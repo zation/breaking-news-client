@@ -4,14 +4,67 @@
   display: flex;
 }
 
+.Numbers {
+  text-align: center;
+  margin-right: 20px;
+  color: #677075;
+
+  .UpIcon,
+  .DownIcon {
+    font-size: 24px;
+    cursor: pointer;
+
+    &.active,
+    &:hover {
+      color: @primary-color;
+    }
+  }
+
+  .SecurityIcon {
+    font-size: 36px;
+    color: @red-8;
+  }
+
+  .secure {
+    color: @success-color;
+  }
+
+  .DownIcon {
+    transform: rotate(180deg);
+  }
+
+  .Number {
+    font-size: 24px;
+    font-weight: 700;
+  }
+}
+
 .Image {
   max-width: 100%;
 }
 
-.Agree {
-  background: @success-color;
+.Support {
+  background: @green-6;
+  border-color: @green-6;
+
+  &:focus,
+  &:active,
+  &:hover {
+    background: @green-5;
+    border-color: @green-5;
+  }
 }
 
-.Disagree {
-  background: @error-color;
+.NotSupport {
+  background: @red-8;
+  border-color: @red-8;
+  color: white;
+
+  &:focus,
+  &:active,
+  &:hover {
+    background: @red-7;
+    border-color: @red-7;
+    color: white;
+  }
 }

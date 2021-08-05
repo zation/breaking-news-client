@@ -10,6 +10,7 @@ import routes from 'modules/routes';
 import i18n from 'relient/i18n';
 import { setUserAgent } from 'shared/actions/global';
 import { getCurrentAccount } from 'shared/selectors/account';
+import initialState from './fake-data';
 import createStore from '../create-store';
 import chunks from './chunk-manifest.json'; // eslint-disable-line import/no-unresolved
 import Html from '../html';
@@ -28,9 +29,7 @@ export default async (req, res, next) => {
     const { protocol } = req;
     const origin = `${protocol}://${req.get('host')}`;
     const store = createStore({
-      res,
-      req,
-      origin,
+      initialState,
     });
 
     const { dispatch } = store;

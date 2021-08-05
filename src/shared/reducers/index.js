@@ -1,11 +1,13 @@
 import { combineReducers } from 'redux';
 import { createReducer } from 'relient/reducers';
-import account from './account';
+import user from './user';
+import news from './news';
 import global from './global';
 
 export default combineReducers({
   ...createReducer([
-    account,
+    user,
+    news,
   ]),
   ...global,
 });

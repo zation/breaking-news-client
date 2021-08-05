@@ -13,6 +13,7 @@ import getConfig from 'relient/config';
 import App from 'shared/components/app';
 import routes from 'modules/routes';
 import i18n from 'relient/i18n';
+import { setCurrentUserAddress } from 'shared/actions/global';
 import history from './history';
 import store from './store';
 
@@ -101,10 +102,14 @@ async function onLocationChange({ location, action }) {
         {route.component}
       </App>,
       container,
-      () => {
+      async () => {
         if (isInitialRender) {
           const elem = document.getElementById('css');
           if (elem) elem.parentNode.removeChild(elem);
+          if (window.platon) {
+            const result = await window.platon.request({ method: 'platon_requestAccounts' });
+            store.dispatch(setCurrentUserAddress(result[0]));
+          }
           return;
         }
 
