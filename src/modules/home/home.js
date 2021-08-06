@@ -45,9 +45,10 @@ const result = () => {
               currentUserAddress={currentUserAddress}
               key={newsItem.id}
               viewpoint={newsItem}
-              canSupport
+              hasOperations
               supportCount={newsItem.supportCount}
               notSupportCount={newsItem.notSupportCount}
+              maxImages={1}
             />
           ))(news)}
         </Col>

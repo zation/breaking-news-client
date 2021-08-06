@@ -2,6 +2,8 @@
 
 .Root {
   display: flex;
+  padding: 30px;
+  border-bottom: 1px solid #e4e6e6;
 }
 
 .Numbers {
@@ -13,6 +15,10 @@
   .DownIcon {
     font-size: 24px;
     cursor: pointer;
+
+    .active {
+      cursor: default;
+    }
 
     &.active,
     &:hover {
@@ -43,28 +49,57 @@
   max-width: 100%;
 }
 
-.Support {
-  background: @green-6;
-  border-color: @green-6;
+.Address {
+  color: @primary-color;
+  cursor: pointer;
+  margin-right: 20px;
+}
 
-  &:focus,
-  &:active,
-  &:hover {
-    background: @green-5;
-    border-color: @green-5;
-  }
+.lighten {
+  color: #7c7f85;
+  font-size: 12px;
+}
+
+.Title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.Content {
+  line-height: 2;
+  margin-bottom: 10px;
+}
+
+.Images {
+  margin-bottom: 10px;
+}
+
+.Operations {
+  display: flex;
+  background: #f5f5f5;
+  padding: 14px;
+}
+
+.Support,
+.NotSupport {
+  width: 200px;
+  padding-left: 10px;
+}
+
+.Support {
+  margin-right: 20px;
 }
 
 .NotSupport {
-  background: @red-8;
   border-color: @red-8;
-  color: white;
+  color: @red-8;
+  background: white;
 
   &:focus,
   &:active,
   &:hover {
-    background: @red-7;
     border-color: @red-7;
-    color: white;
+    color: @red-7;
   }
 }

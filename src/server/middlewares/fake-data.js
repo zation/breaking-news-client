@@ -18,7 +18,7 @@ const users = map(getUser)(range(0, 100));
 const getViewpoint = (values = {}) => ({
   id: datatype.number(),
   authorAddress: flow(sample, prop('address'))(users),
-  title: lorem.sentence(),
+  title: `${lorem.sentence()} ${lorem.sentence()}`,
   content: lorem.paragraphs(),
   images: flow(
     randomArray,
@@ -40,7 +40,7 @@ const getViewpoint = (values = {}) => ({
 const getNews = (values = {}) => ({
   id: datatype.number(),
   authorAddress: flow(sample, prop('address'))(users),
-  title: lorem.sentence(),
+  title: `${lorem.sentence()} ${lorem.sentence()}`,
   content: lorem.paragraphs(),
   images: flow(
     randomArray,

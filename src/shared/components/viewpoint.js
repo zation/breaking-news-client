@@ -1,5 +1,5 @@
-import React from 'react';
-import { object, bool, number, string } from 'prop-types';
+import React, { useCallback } from 'react';
+import { object, bool, number, string, func } from 'prop-types';
 import useStyles from 'isomorphic-style-loader/useStyles';
 import {
   SafetyCertificateOutlined,
@@ -8,7 +8,7 @@ import {
   DislikeOutlined,
 } from '@ant-design/icons';
 import { date } from 'relient/formatters';
-import { map, size, includes } from 'lodash/fp';
+import { map, size, includes, flow, slice, identity } from 'lodash/fp';
 import { Button } from 'antd';
 import classNames from 'classnames';
 
@@ -18,6 +18,7 @@ const SECURE_CREDIBILITY = 0;
 
 const result = ({
   viewpoint: {
+    id,
     author = {},
     title,
     content,
@@ -26,12 +27,29 @@ const result = ({
     dislikeAddresses = [],
     createdAt,
   },
-  canSupport = false,
+  hasOperations = false,
   supportCount,
   notSupportCount,
   currentUserAddress,
+  dislike,
+  like,
+  maxImages,
 }) => {
   useStyles(s);
+  const isLiked = includes(currentUserAddress)(likeAddresses);
+  const isDisliked = includes(currentUserAddress)(dislikeAddresses);
+
+  const onLike = useCallback(() => {
+    if (!isLiked && !isDisliked) {
+      like(id);
+    }
+  }, [isLiked, isDisliked, id]);
+
+  const onDislike = useCallback(() => {
+    if (!isLiked && !isDisliked) {
+      dislike(id);
+    }
+  }, [isLiked, isDisliked, id]);
 
   return (
     <div className={s.Root}>
@@ -46,35 +64,43 @@ const result = ({
         <div className={s.Number} style={{ marginBottom: 20 }}>{author.credibility}</div>
         <div>
           <CaretUpOutlined
+            onClick={onLike}
             className={classNames(s.UpIcon, {
-              [s.active]: includes(currentUserAddress)(likeAddresses),
+              [s.active]: isLiked,
             })}
           />
         </div>
         <div className={s.Number}>{size(likeAddresses) - size(dislikeAddresses)}</div>
         <div>
           <CaretUpOutlined
+            onClick={onDislike}
             className={classNames(s.DownIcon, {
-              [s.active]: includes(currentUserAddress)(dislikeAddresses),
+              [s.active]: isDisliked,
             })}
           />
         </div>
       </div>
 
       <div>
-        <div>{author.address} Created: {date()(createdAt)}</div>
-        <div>{title}</div>
-        <div>{content}</div>
         <div>
-          {map((url) => (
-            <img key={url} className={s.Image} src={url} alt={title} />
-          ))(images)}
+          <span className={s.Address}>{author.address}</span>
+          <span className={s.lighten}>Created</span>: {date()(createdAt)}
+        </div>
+        <div className={s.Title}>{title}</div>
+        <div className={s.Content}>{content}</div>
+        <div className={s.Images}>
+          {flow(
+            maxImages >= 0 ? slice(0, maxImages) : identity,
+            map((url) => (
+              <img key={url} className={s.Image} src={url} alt={title} />
+            )),
+          )(images)}
         </div>
 
-        {canSupport && (
-          <div>
-            <Button className={s.Support} type="primary"><LikeOutlined /> {supportCount} 支持</Button>
-            <Button className={s.NotSupport}><DislikeOutlined /> {notSupportCount} 反对</Button>
+        {hasOperations && (
+          <div className={s.Operations}>
+            <Button size="large" type="primary" className={s.Support}><LikeOutlined /> {supportCount} 支持</Button>
+            <Button size="large" className={s.NotSupport}><DislikeOutlined /> {notSupportCount} 反对</Button>
           </div>
         )}
       </div>
@@ -84,10 +110,13 @@ const result = ({
 
 result.propTypes = {
   viewpoint: object.isRequired,
-  canSupport: bool,
+  hasOperations: bool,
   supportCount: number,
   notSupportCount: number,
   currentUserAddress: string,
+  like: func.isRequired,
+  dislike: func.isRequired,
+  maxImages: number,
 };
 
 result.displayName = __filename;
