@@ -11,6 +11,8 @@ import { date } from 'relient/formatters';
 import { map, size, includes, flow, slice, identity } from 'lodash/fp';
 import { Button } from 'antd';
 import classNames from 'classnames';
+import { push } from 'relient/actions/history';
+import { useDispatch } from 'react-redux';
 
 import s from './viewpoint.less';
 
@@ -28,6 +30,7 @@ const result = ({
     createdAt,
   },
   hasOperations = false,
+  canClickTitle = false,
   supportCount,
   notSupportCount,
   currentUserAddress,
@@ -36,6 +39,7 @@ const result = ({
   maxImages,
 }) => {
   useStyles(s);
+  const dispatch = useDispatch();
   const isLiked = includes(currentUserAddress)(likeAddresses);
   const isDisliked = includes(currentUserAddress)(dislikeAddresses);
 
@@ -50,6 +54,10 @@ const result = ({
       dislike(id);
     }
   }, [isLiked, isDisliked, id]);
+
+  const onTitleClick = useCallback(() => {
+    dispatch(push(`/${id}`));
+  }, [id]);
 
   return (
     <div className={s.Root}>
@@ -86,7 +94,7 @@ const result = ({
           <span className={s.Address}>{author.address}</span>
           <span className={s.lighten}>Created</span>: {date()(createdAt)}
         </div>
-        <div className={s.Title}>{title}</div>
+        <div className={s.Title} onClick={canClickTitle ? onTitleClick : null}>{title}</div>
         <div className={s.Content}>{content}</div>
         <div className={s.Images}>
           {flow(
@@ -117,6 +125,7 @@ result.propTypes = {
   like: func.isRequired,
   dislike: func.isRequired,
   maxImages: number,
+  canClickTitle: bool,
 };
 
 result.displayName = __filename;
