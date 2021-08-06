@@ -107,8 +107,21 @@ const result = ({
 
         {hasOperations && (
           <div className={s.Operations}>
-            <Button size="large" type="primary" className={s.Support}><LikeOutlined /> {supportCount} 支持</Button>
-            <Button size="large" className={s.NotSupport}><DislikeOutlined /> {notSupportCount} 反对</Button>
+            <Button
+              size="large"
+              type="primary"
+              className={s.Support}
+              icon={<LikeOutlined />}
+            >
+              {supportCount} 支持
+            </Button>
+            <Button
+              size="large"
+              className={s.NotSupport}
+              icon={<DislikeOutlined />}
+            >
+              {notSupportCount} 反对
+            </Button>
           </div>
         )}
       </div>
