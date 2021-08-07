@@ -14,6 +14,8 @@ import App from 'shared/components/app';
 import routes from 'modules/routes';
 import i18n from 'relient/i18n';
 import { setCurrentUserAddress } from 'shared/actions/global';
+import { getAll as getAllUser } from 'shared/actions/user';
+import { getAll as getAllNews } from 'shared/actions/news';
 import history from './history';
 import store from './store';
 
@@ -110,6 +112,8 @@ async function onLocationChange({ location, action }) {
             const result = await window.platon.request({ method: 'platon_requestAccounts' });
             store.dispatch(setCurrentUserAddress(result[0]));
           }
+          store.dispatch(getAllNews());
+          store.dispatch(getAllUser());
           return;
         }
 
