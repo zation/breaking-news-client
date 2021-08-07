@@ -49,7 +49,6 @@ const result = () => {
               supportCount={newsItem.supportCount}
               notSupportCount={newsItem.notSupportCount}
               maxImages={1}
-              canClickTitle
             />
           ))(news)}
         </Col>

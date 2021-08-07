@@ -31,7 +31,6 @@ const result = ({
     isSupport,
   },
   hasOperations = false,
-  canClickTitle = false,
   showTag = false,
   supportCount,
   notSupportCount,
@@ -105,7 +104,9 @@ const result = ({
           <span className={s.lighten}>Created</span>: {date()(createdAt)}
           {showTag && <Tag className={s.Tag} color={isSupport ? 'success' : 'warning'}>{isSupport ? '支持' : '反对'}</Tag>}
         </div>
-        <div className={s.Title} onClick={canClickTitle ? onTitleClick : null}>{title}</div>
+        {title && (
+          <div className={s.Title} onClick={onTitleClick}>{title}</div>
+        )}
         <div className={s.Content}>{content}</div>
         <div className={s.Images}>
           {flow(
@@ -151,7 +152,6 @@ result.propTypes = {
   like: func.isRequired,
   dislike: func.isRequired,
   maxImages: number,
-  canClickTitle: bool,
   showTag: bool,
 };
 

@@ -11,7 +11,6 @@ const mapViewpoint = map(([
   // eslint-disable-next-line no-unused-vars
   _,
   authorAddress,
-  title,
   content,
   images,
   likeAddresses,
@@ -23,7 +22,6 @@ const mapViewpoint = map(([
   isSupport,
   id,
   authorAddress,
-  title,
   content,
   images,
   likeAddresses,

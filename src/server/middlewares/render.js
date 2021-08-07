@@ -27,7 +27,7 @@ export default async (req, res, next) => {
   try {
     const { protocol } = req;
     const origin = `${protocol}://${req.get('host')}`;
-    const store = createStore();
+    const store = createStore({});
 
     const { dispatch } = store;
 

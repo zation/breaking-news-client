@@ -19,7 +19,6 @@ const getViewpoint = () => [
   datatype.number(), // id
   '', // news id
   flow(sample, first)(users), // authorAddress
-  `${lorem.sentence()} ${lorem.sentence()}`, // title
   lorem.paragraphs(), // content
   flow(randomArray, map(() => image.image()))(4), // images
   flow(sampleSize(sample(range(0, 40))), map(first))(users), // likeAddresses
@@ -29,8 +28,8 @@ const getViewpoint = () => [
 ];
 
 const getNews = () => [
-  datatype.number(), // id
   `${lorem.sentence()} ${lorem.sentence()}`, // title
+  datatype.number(), // id
   flow(sample, first)(users), // authorAddress
   lorem.paragraphs(), // content
   flow(randomArray, map(() => image.image()))(4), // images
