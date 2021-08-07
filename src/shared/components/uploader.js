@@ -2,6 +2,8 @@ import React from 'react';
 import { func } from 'prop-types';
 import { Upload } from 'antd';
 
+// http://127.0.0.1:8080/ipfs/:hash
+
 const result = ({ onChange }) => (
   <Upload
     listType="picture-card"

@@ -36,6 +36,7 @@ const result = ({ newsId }) => {
               currentUserAddress={currentUserAddress}
               key={viewpoint.id}
               viewpoint={viewpoint}
+              showTag
             />
           ))(news.viewpoints)}
         </Col>

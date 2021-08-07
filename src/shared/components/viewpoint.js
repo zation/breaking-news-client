@@ -9,7 +9,7 @@ import {
 } from '@ant-design/icons';
 import { date } from 'relient/formatters';
 import { map, size, includes, flow, slice, identity } from 'lodash/fp';
-import { Button } from 'antd';
+import { Button, Tag } from 'antd';
 import classNames from 'classnames';
 import { push } from 'relient/actions/history';
 import { useDispatch } from 'react-redux';
@@ -28,9 +28,11 @@ const result = ({
     likeAddresses = [],
     dislikeAddresses = [],
     createdAt,
+    isSupport,
   },
   hasOperations = false,
   canClickTitle = false,
+  showTag = false,
   supportCount,
   notSupportCount,
   currentUserAddress,
@@ -93,6 +95,7 @@ const result = ({
         <div>
           <span className={s.Address}>{author.address}</span>
           <span className={s.lighten}>Created</span>: {date()(createdAt)}
+          {showTag && <Tag className={s.Tag} color={isSupport ? 'success' : 'warning'}>{isSupport ? '支持' : '反对'}</Tag>}
         </div>
         <div className={s.Title} onClick={canClickTitle ? onTitleClick : null}>{title}</div>
         <div className={s.Content}>{content}</div>
@@ -139,6 +142,7 @@ result.propTypes = {
   dislike: func.isRequired,
   maxImages: number,
   canClickTitle: bool,
+  showTag: bool,
 };
 
 result.displayName = __filename;
