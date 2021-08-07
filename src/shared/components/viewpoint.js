@@ -61,6 +61,14 @@ const result = ({
     dispatch(push(`/${id}`));
   }, [id]);
 
+  const onSupport = useCallback(() => {
+    dispatch(push(`/${id}/create/true`));
+  }, [id]);
+
+  const onAgainst = useCallback(() => {
+    dispatch(push(`/${id}/create/false`));
+  }, [id]);
+
   return (
     <div className={s.Root}>
       <div className={s.Numbers}>
@@ -115,6 +123,7 @@ const result = ({
               type="primary"
               className={s.Support}
               icon={<LikeOutlined />}
+              onClick={onSupport}
             >
               {supportCount} 支持
             </Button>
@@ -122,6 +131,7 @@ const result = ({
               size="large"
               className={s.NotSupport}
               icon={<DislikeOutlined />}
+              onClick={onAgainst}
             >
               {notSupportCount} 反对
             </Button>
