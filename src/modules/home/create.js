@@ -1,11 +1,12 @@
 import React, { useCallback } from 'react';
 import { number, bool } from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Layout from 'shared/components/layout';
 import useStyles from 'isomorphic-style-loader/useStyles';
 import { Row, Col, Input, Form, Button } from 'antd';
 import Uploader from 'shared/components/uploader';
 import { map, flow, prop } from 'lodash/fp';
+import { goBack } from 'relient/actions/history';
 import selector from './news-selector';
 
 import s from './create.less';
@@ -19,6 +20,11 @@ const result = ({ newsId, isSupport }) => {
     news,
     // currentUserAddress,
   } = useSelector(selector(newsId));
+  const dispatch = useDispatch();
+
+  const onBack = useCallback(() => {
+    dispatch(goBack());
+  }, []);
 
   const onSubmit = useCallback((values) => {
     const finalValue = {
@@ -39,16 +45,22 @@ const result = ({ newsId, isSupport }) => {
     <Layout className={s.Root}>
       <Row>
         <Col offset={5} span={14} className={s.Content}>
-          {news && (
-            <Row className={s.Title}>
-              <Col span={4} style={{ textAlign: 'right' }}>
-                {isSupport ? '支持' : '反对'}：
+          <Row className={s.Title}>
+            {news ? (
+              <>
+                <Col span={4} style={{ textAlign: 'right' }}>
+                  {isSupport ? '支持' : '反对'}：
+                </Col>
+                <Col span={20}>
+                  {news.title}
+                </Col>
+              </>
+            ) : (
+              <Col span={24} style={{ textAlign: 'center' }}>
+                创建爆料
               </Col>
-              <Col span={20}>
-                {news.title}
-              </Col>
-            </Row>
-          )}
+            )}
+          </Row>
           <Form
             onFinish={onSubmit}
             labelCol={{ span: 4 }}
@@ -63,8 +75,9 @@ const result = ({ newsId, isSupport }) => {
             <Item label="图片" name="images">
               <Uploader />
             </Item>
-            <Item wrapperCol={{ offset: 4, span: 8 }}>
-              <Button type="primary" size="large" htmlType="submit" block>提交</Button>
+            <Item wrapperCol={{ offset: 4, span: 12 }}>
+              <Button type="primary" size="large" htmlType="submit" className={s.Button}>提交</Button>
+              <Button size="large" onClick={onBack} className={s.Button}>返回</Button>
             </Item>
           </Form>
         </Col>

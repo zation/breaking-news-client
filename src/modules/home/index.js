@@ -8,6 +8,10 @@ export default () => [{
   feature: HOME,
   component: <Home />,
 }, {
+  path: '/create',
+  feature: HOME,
+  component: <Create />,
+}, {
   path: '/:newsId',
   feature: HOME,
   action: ({ params: { newsId } }) => ({
