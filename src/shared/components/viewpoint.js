@@ -7,7 +7,7 @@ import {
   LikeOutlined,
   DislikeOutlined,
 } from '@ant-design/icons';
-import { date } from 'relient/formatters';
+import { time } from 'relient/formatters';
 import { map, size, includes, flow, slice, identity } from 'lodash/fp';
 import { Button, Tag } from 'antd';
 import classNames from 'classnames';
@@ -98,10 +98,10 @@ const result = ({
         </div>
       </div>
 
-      <div>
+      <div className={s.Main}>
         <div>
           <span className={s.Address}>{author.address}</span>
-          <span className={s.lighten}>Created</span>: {date()(createdAt)}
+          <span className={s.lighten}>Created</span>: {time()(createdAt)}
           {showTag && <Tag className={s.Tag} color={isSupport ? 'success' : 'warning'}>{isSupport ? '支持' : '反对'}</Tag>}
         </div>
         {title && (

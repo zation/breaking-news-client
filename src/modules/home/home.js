@@ -19,10 +19,7 @@ const result = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      dispatch(getAll());
-    }, 10000);
-    return () => clearInterval(interval);
+    dispatch(getAll());
   }, []);
 
   return (

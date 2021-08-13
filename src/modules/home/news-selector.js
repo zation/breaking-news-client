@@ -1,5 +1,6 @@
 import { getEntity } from 'relient/selectors';
 import { flow, map, size, prop, filter } from 'lodash/fp';
+import { sortByDateDesc } from 'shared/utils/sort';
 
 export default (newsId) => (state) => ({
   currentUserAddress: prop('global.currentUserAddress')(state),
@@ -9,6 +10,7 @@ export default (newsId) => (state) => ({
       ...news,
       viewpoints: flow(
         prop('viewpoints'),
+        sortByDateDesc('createdAt'),
         map((viewpoint) => ({
           ...viewpoint,
           author: getEntity(`user.${viewpoint.authorAddress}`)(state),

@@ -1,14 +1,15 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { number, bool } from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import Layout from 'shared/components/layout';
 import useStyles from 'isomorphic-style-loader/useStyles';
 import { Row, Col, Input, Form, Button } from 'antd';
 import Uploader from 'shared/components/uploader';
-import { map, flow, prop } from 'lodash/fp';
-import { goBack } from 'relient/actions/history';
-import { create as createNews, createViewpoint } from 'shared/actions/news';
-import selector from './news-selector';
+import { map, flow, prop, filter, first, propEq } from 'lodash/fp';
+import { sortByDateDesc } from 'shared/utils/sort';
+import { goBack, push } from 'relient/actions/history';
+import { create as createNews, createViewpoint, getAll } from 'shared/actions/news';
+import selector from './create-selector';
 
 import s from './create.less';
 
@@ -19,30 +20,47 @@ const result = ({ newsId, isSupport }) => {
   useStyles(s);
   const {
     news,
-    // currentUserAddress,
+    currentUserAddress,
   } = useSelector(selector(newsId));
   const dispatch = useDispatch();
+  const [submitting, setSubmitting] = useState(false);
 
   const onBack = useCallback(() => {
     dispatch(goBack());
   }, []);
 
-  const onSubmit = useCallback((values) => {
-    const finalValue = {
-      ...values,
-      images: flow(
-        prop('images.fileList'),
-        map(prop('response.Hash')),
-      )(values),
-      createdAt: new Date().toISOString(),
-      isSupport,
-      newsID: newsId,
-    };
-    if (newsId) {
-      return dispatch(createViewpoint(finalValue));
+  const onSubmit = useCallback(async (values) => {
+    setSubmitting(true);
+    try {
+      const finalValue = {
+        ...values,
+        images: flow(
+          prop('images.fileList'),
+          map(prop('response.Hash')),
+        )(values),
+        createdAt: new Date().toISOString(),
+        isSupport,
+        newsID: newsId,
+      };
+      if (newsId) {
+        await dispatch(createViewpoint(finalValue));
+        dispatch(push(`/${newsId}`));
+      }
+      const { status } = await dispatch(createNews(finalValue));
+      if (status) {
+        const { payload: allNews } = await dispatch(getAll());
+        const newNewsId = flow(
+          filter(propEq('authorAddress', currentUserAddress)),
+          sortByDateDesc('createdAt'),
+          first,
+          prop('id'),
+        )(allNews);
+        dispatch(push(`/${newNewsId}`));
+      }
+    } catch (e) {
+      setSubmitting(false);
     }
-    return dispatch(createNews(finalValue));
-  }, [newsId, isSupport]);
+  }, [newsId, isSupport, currentUserAddress]);
 
   return (
     <Layout className={s.Root}>
@@ -79,7 +97,7 @@ const result = ({ newsId, isSupport }) => {
               <Uploader />
             </Item>
             <Item wrapperCol={{ offset: 4, span: 12 }}>
-              <Button type="primary" size="large" htmlType="submit" className={s.Button}>提交</Button>
+              <Button type="primary" size="large" htmlType="submit" className={s.Button} loading={submitting}>提交</Button>
               <Button size="large" onClick={onBack} className={s.Button}>返回</Button>
             </Item>
           </Form>
