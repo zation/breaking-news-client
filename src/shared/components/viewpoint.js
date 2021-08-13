@@ -111,8 +111,8 @@ const result = ({
         <div className={s.Images}>
           {flow(
             maxImages >= 0 ? slice(0, maxImages) : identity,
-            map((url) => (
-              <img key={url} className={s.Image} src={url} alt={title} />
+            map((hash) => (
+              <img key={hash} className={s.Image} src={`//47.241.69.26:8080/ipfs/${hash}`} alt={title} />
             )),
           )(images)}
         </div>

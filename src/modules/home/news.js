@@ -5,7 +5,7 @@ import Layout from 'shared/components/layout';
 import useStyles from 'isomorphic-style-loader/useStyles';
 import { Row, Col } from 'antd';
 import Viewpoint from 'shared/components/viewpoint';
-import { map } from 'lodash/fp';
+import { map, size } from 'lodash/fp';
 import selector from './news-selector';
 
 import s from './news.less';
@@ -28,9 +28,11 @@ const result = ({ newsId }) => {
             supportCount={news.supportCount}
             notSupportCount={news.notSupportCount}
           />
-          <div className={s.Separator}>
-            支持与反对
-          </div>
+          {size(news.viewpoints) > 0 && (
+            <div className={s.Separator}>
+              支持与反对
+            </div>
+          )}
           {map((viewpoint) => (
             <Viewpoint
               currentUserAddress={currentUserAddress}

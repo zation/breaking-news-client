@@ -23,6 +23,7 @@
     "lodash": "^4.17.19",
     "moment": "^2.27.0",
     "morgan": "^1.9.1",
+    "platon-truffle": "^1.0.0",
     "prop-types": "^15.7.2",
     "query-string": "^7.0.0",
     "react": "^17.0.1",

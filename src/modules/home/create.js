@@ -7,6 +7,7 @@ import { Row, Col, Input, Form, Button } from 'antd';
 import Uploader from 'shared/components/uploader';
 import { map, flow, prop } from 'lodash/fp';
 import { goBack } from 'relient/actions/history';
+import { create as createNews, createViewpoint } from 'shared/actions/news';
 import selector from './news-selector';
 
 import s from './create.less';
@@ -37,8 +38,10 @@ const result = ({ newsId, isSupport }) => {
       isSupport,
       newsID: newsId,
     };
-    // eslint-disable-next-line no-console
-    console.log(finalValue);
+    if (newsId) {
+      return dispatch(createViewpoint(finalValue));
+    }
+    return dispatch(createNews(finalValue));
   }, [newsId, isSupport]);
 
   return (

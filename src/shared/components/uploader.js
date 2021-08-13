@@ -2,12 +2,10 @@ import React from 'react';
 import { func } from 'prop-types';
 import { Upload } from 'antd';
 
-// http://127.0.0.1:8080/ipfs/:hash
-
 const result = ({ onChange }) => (
   <Upload
     listType="picture-card"
-    action="http://127.0.0.1:5001/api/v0/add"
+    action="http://47.241.69.26:5001/api/v0/add"
     onChange={onChange}
   >
     点击上传图片
@@ -15,7 +13,7 @@ const result = ({ onChange }) => (
 );
 
 result.propTypes = {
-  onChange: func.isRequired,
+  onChange: func,
 };
 
 result.displayName = __filename;
