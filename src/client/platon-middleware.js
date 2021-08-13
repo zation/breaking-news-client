@@ -20,6 +20,7 @@ const waitForTransactionReceipt = (txHash) => new Promise((resolve, reject) => {
         clearInterval(interval);
       } else if (result) {
         resolve(result);
+        clearInterval(interval);
       }
     });
   }, 500);
@@ -50,18 +51,16 @@ const serializeViewpoint = ([
 });
 
 const deserializeViewpoint = ({
-  title,
   newsId,
   content,
   images,
-  isSupported,
+  isSupport,
   createdAt,
 }) => [
-  title,
   newsId,
   content,
   images,
-  isSupported,
+  isSupport,
   createdAt,
 ];
 
@@ -131,10 +130,11 @@ export default () => (next) => async (action) => {
         to: contract.options.address,
       }],
     });
-    return waitForTransactionReceipt(txHash);
+    const result = await waitForTransactionReceipt(txHash);
+    return next({ ...action, payload: result });
   }
   if (type === CREATE_VIEWPOINT) {
-    const data = contract.methods.createViewpoint(...deserializeViewpoint(payload)).encodeABI();
+    const data = contract.methods.createViewPoint(...deserializeViewpoint(payload)).encodeABI();
     const txHash = await window.platon.request({
       method: 'platon_sendTransaction',
       params: [{
@@ -143,7 +143,8 @@ export default () => (next) => async (action) => {
         to: contract.options.address,
       }],
     });
-    return waitForTransactionReceipt(txHash);
+    const result = await waitForTransactionReceipt(txHash);
+    return next({ ...action, payload: result });
   }
   return next(action);
 };

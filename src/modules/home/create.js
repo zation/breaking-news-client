@@ -40,13 +40,16 @@ const result = ({ newsId, isSupport }) => {
         )(values),
         createdAt: new Date().toISOString(),
         isSupport,
-        newsID: newsId,
+        newsId,
       };
       if (newsId) {
-        await dispatch(createViewpoint(finalValue));
-        dispatch(push(`/${newsId}`));
+        const { payload: { status } } = await dispatch(createViewpoint(finalValue));
+        if (status) {
+          return dispatch(push(`/${newsId}`));
+        }
+        return setSubmitting(false);
       }
-      const { status } = await dispatch(createNews(finalValue));
+      const { payload: { status } } = await dispatch(createNews(finalValue));
       if (status) {
         const { payload: allNews } = await dispatch(getAll());
         const newNewsId = flow(
@@ -55,11 +58,13 @@ const result = ({ newsId, isSupport }) => {
           first,
           prop('id'),
         )(allNews);
-        dispatch(push(`/${newNewsId}`));
+        return dispatch(push(`/${newNewsId}`));
       }
     } catch (e) {
+      console.error(e);
       setSubmitting(false);
     }
+    return null;
   }, [newsId, isSupport, currentUserAddress]);
 
   return (
@@ -87,9 +92,11 @@ const result = ({ newsId, isSupport }) => {
             labelCol={{ span: 4 }}
             wrapperCol={{ span: 14 }}
           >
-            <Item label="标题" name="title" rules={[{ required: true }]}>
-              <Input />
-            </Item>
+            {!news && (
+              <Item label="标题" name="title" rules={[{ required: true }]}>
+                <Input />
+              </Item>
+            )}
             <Item label="内容" name="content" rules={[{ required: true }]}>
               <TextArea />
             </Item>

@@ -13,7 +13,7 @@ import s from './news.less';
 const result = ({ newsId }) => {
   useStyles(s);
   const {
-    news,
+    news = {},
     currentUserAddress,
   } = useSelector(selector(newsId));
 

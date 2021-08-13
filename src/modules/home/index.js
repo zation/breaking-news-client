@@ -15,12 +15,12 @@ export default () => [{
   path: '/:newsId',
   feature: HOME,
   action: ({ params: { newsId } }) => ({
-    component: <News newsId={Number(newsId)} />,
+    component: <News newsId={newsId} />,
   }),
 }, {
   path: '/:newsId/create/:isSupport',
   feature: HOME,
   action: ({ params: { newsId, isSupport } }) => ({
-    component: <Create newsId={Number(newsId)} isSupport={isSupport === 'true'} />,
+    component: <Create newsId={newsId} isSupport={isSupport === 'true'} />,
   }),
 }];
