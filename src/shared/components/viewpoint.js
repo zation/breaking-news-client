@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { object, bool, number, string } from 'prop-types';
 import useStyles from 'isomorphic-style-loader/useStyles';
 import {
@@ -9,7 +9,7 @@ import {
 } from '@ant-design/icons';
 import { time } from 'relient/formatters';
 import { map, size, includes, flow, slice, identity } from 'lodash/fp';
-import { Button, Tag, message } from 'antd';
+import { Button, Tag, message, Spin } from 'antd';
 import classNames from 'classnames';
 import { push } from 'relient/actions/history';
 import { useDispatch } from 'react-redux';
@@ -52,11 +52,14 @@ const result = ({
   const dispatch = useDispatch();
   const isLiked = includes(currentUserAddress)(likeAddresses);
   const isDisliked = includes(currentUserAddress)(dislikeAddresses);
+  const [isLiking, setIsLiking] = useState(false);
+  const [isDisliking, setIsDisliking] = useState(false);
 
   const onLike = useCallback(async () => {
     if (isDisliked) {
       return message.error('请先取消点踩');
     }
+    setIsLiking(true);
     if (isSupport === false || isSupport === true) {
       if (isLiked) {
         await dispatch(cancelLikeViewpoint(id));
@@ -68,6 +71,7 @@ const result = ({
     } else {
       await dispatch(like(id));
     }
+    setIsLiking(false);
     return dispatch(getAll());
   }, [isLiked, isDisliked, id, isSupport]);
 
@@ -75,6 +79,7 @@ const result = ({
     if (isLiked) {
       return message.error('请先取消点赞');
     }
+    setIsDisliking(true);
     if (isSupport === false || isSupport === true) {
       if (isDisliked) {
         await dispatch(cancelDislikeViewpoint(id));
@@ -86,6 +91,7 @@ const result = ({
     } else {
       await dispatch(dislike(id));
     }
+    setIsDisliking(false);
     return dispatch(getAll());
   }, [isLiked, isDisliked, id, isSupport]);
 
@@ -103,33 +109,35 @@ const result = ({
 
   return (
     <div className={s.Root}>
-      <div className={s.Numbers}>
-        <div>
-          <SafetyCertificateOutlined
-            className={classNames(s.SecurityIcon, {
-              [s.secure]: author.credibility >= SECURE_CREDIBILITY,
-            })}
-          />
+      <Spin spinning={isDisliking || isLiking}>
+        <div className={s.Numbers}>
+          <div>
+            <SafetyCertificateOutlined
+              className={classNames(s.SecurityIcon, {
+                [s.secure]: author.credibility >= SECURE_CREDIBILITY,
+              })}
+            />
+          </div>
+          <div className={s.Number} style={{ marginBottom: 20 }}>{author.credibility}</div>
+          <div>
+            <CaretUpOutlined
+              onClick={onLike}
+              className={classNames(s.UpIcon, {
+                [s.active]: isLiked,
+              })}
+            />
+          </div>
+          <div className={s.Number}>{size(likeAddresses) - size(dislikeAddresses)}</div>
+          <div>
+            <CaretUpOutlined
+              onClick={onDislike}
+              className={classNames(s.DownIcon, {
+                [s.active]: isDisliked,
+              })}
+            />
+          </div>
         </div>
-        <div className={s.Number} style={{ marginBottom: 20 }}>{author.credibility}</div>
-        <div>
-          <CaretUpOutlined
-            onClick={onLike}
-            className={classNames(s.UpIcon, {
-              [s.active]: isLiked,
-            })}
-          />
-        </div>
-        <div className={s.Number}>{size(likeAddresses) - size(dislikeAddresses)}</div>
-        <div>
-          <CaretUpOutlined
-            onClick={onDislike}
-            className={classNames(s.DownIcon, {
-              [s.active]: isDisliked,
-            })}
-          />
-        </div>
-      </div>
+      </Spin>
 
       <div className={s.Main}>
         <div>

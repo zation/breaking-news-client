@@ -8,7 +8,6 @@
 
 .Numbers {
   text-align: center;
-  margin-right: 20px;
   color: #677075;
 
   .UpIcon,
@@ -18,11 +17,6 @@
 
     .active {
       cursor: default;
-    }
-
-    &.active,
-    &:hover {
-      color: @primary-color;
     }
   }
 
@@ -35,8 +29,20 @@
     color: @success-color;
   }
 
+  .UpIcon {
+    &.active,
+    &:hover {
+      color: @primary-color;
+    }
+  }
+
   .DownIcon {
     transform: rotate(180deg);
+
+    &.active,
+    &:hover {
+      color: @red-8;
+    }
   }
 
   .Number {
@@ -48,6 +54,7 @@
 .Main {
   flex: 1;
   position: relative;
+  margin-left: 20px;
 }
 
 .Image {
