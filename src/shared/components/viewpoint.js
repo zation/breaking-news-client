@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { object, bool, number, string, func } from 'prop-types';
+import { object, bool, number, string } from 'prop-types';
 import useStyles from 'isomorphic-style-loader/useStyles';
 import {
   SafetyCertificateOutlined,
@@ -9,10 +9,21 @@ import {
 } from '@ant-design/icons';
 import { time } from 'relient/formatters';
 import { map, size, includes, flow, slice, identity } from 'lodash/fp';
-import { Button, Tag } from 'antd';
+import { Button, Tag, message } from 'antd';
 import classNames from 'classnames';
 import { push } from 'relient/actions/history';
 import { useDispatch } from 'react-redux';
+import {
+  like,
+  dislike,
+  likeViewpoint,
+  dislikeViewpoint,
+  cancelDislike,
+  cancelDislikeViewpoint,
+  cancelLike,
+  cancelLikeViewpoint,
+  getAll,
+} from 'shared/actions/news';
 
 import s from './viewpoint.less';
 
@@ -35,8 +46,6 @@ const result = ({
   supportCount,
   notSupportCount,
   currentUserAddress,
-  dislike,
-  like,
   maxImages,
 }) => {
   useStyles(s);
@@ -44,17 +53,41 @@ const result = ({
   const isLiked = includes(currentUserAddress)(likeAddresses);
   const isDisliked = includes(currentUserAddress)(dislikeAddresses);
 
-  const onLike = useCallback(() => {
-    if (!isLiked && !isDisliked) {
-      like(id);
+  const onLike = useCallback(async () => {
+    if (isDisliked) {
+      return message.error('请先取消点踩');
     }
-  }, [isLiked, isDisliked, id]);
+    if (isSupport === false || isSupport === true) {
+      if (isLiked) {
+        await dispatch(cancelLikeViewpoint(id));
+      } else {
+        await dispatch(likeViewpoint(id));
+      }
+    } else if (isLiked) {
+      await dispatch(cancelLike(id));
+    } else {
+      await dispatch(like(id));
+    }
+    return dispatch(getAll());
+  }, [isLiked, isDisliked, id, isSupport]);
 
-  const onDislike = useCallback(() => {
-    if (!isLiked && !isDisliked) {
-      dislike(id);
+  const onDislike = useCallback(async () => {
+    if (isLiked) {
+      return message.error('请先取消点赞');
     }
-  }, [isLiked, isDisliked, id]);
+    if (isSupport === false || isSupport === true) {
+      if (isDisliked) {
+        await dispatch(cancelDislikeViewpoint(id));
+      } else {
+        await dispatch(dislikeViewpoint(id));
+      }
+    } else if (isDisliked) {
+      await dispatch(cancelDislike(id));
+    } else {
+      await dispatch(dislike(id));
+    }
+    return dispatch(getAll());
+  }, [isLiked, isDisliked, id, isSupport]);
 
   const onTitleClick = useCallback(() => {
     dispatch(push(`/${id}`));
@@ -149,8 +182,6 @@ result.propTypes = {
   supportCount: number,
   notSupportCount: number,
   currentUserAddress: string,
-  like: func.isRequired,
-  dislike: func.isRequired,
   maxImages: number,
   showTag: bool,
 };

@@ -1,7 +1,19 @@
 import { GET_ALL as GET_ALL_USER } from 'shared/actions/user';
-import { GET_ALL as GET_ALL_NEWS, CREATE, CREATE_VIEWPOINT } from 'shared/actions/news';
+import {
+  GET_ALL as GET_ALL_NEWS,
+  CREATE,
+  CREATE_VIEWPOINT,
+  LIKE,
+  LIKE_VIEWPOINT,
+  DISLIKE,
+  DISLIKE_VIEWPOINT,
+  CANCEL_LIKE,
+  CANCEL_LIKE_VIEWPOINT,
+  CANCEL_DISLIKE,
+  CANCEL_DISLIKE_VIEWPOINT,
+} from 'shared/actions/news';
 import Web3 from 'libs/web3.min';
-import { map } from 'lodash/fp';
+import { map, includes } from 'lodash/fp';
 import abi from './breaking-news.abi';
 
 const web3 = new Web3('ws://47.241.98.219:6790');
@@ -108,6 +120,17 @@ const serializeUser = ([
   credibility,
 });
 
+const methodMap = {
+  [LIKE]: 'likeNews',
+  [DISLIKE]: 'dislikeNews',
+  [CANCEL_LIKE]: 'cancellikeNews',
+  [CANCEL_DISLIKE]: 'canceldislikeNews',
+  [LIKE_VIEWPOINT]: 'likeViewpoint',
+  [DISLIKE_VIEWPOINT]: 'dislikeViewpoint',
+  [CANCEL_LIKE_VIEWPOINT]: 'cancellikeViewpoint',
+  [CANCEL_DISLIKE_VIEWPOINT]: 'canceldislikeViewpoint',
+};
+
 export default () => (next) => async (action) => {
   const { type, payload } = action;
   if (type === GET_ALL_USER) {
@@ -135,6 +158,28 @@ export default () => (next) => async (action) => {
   }
   if (type === CREATE_VIEWPOINT) {
     const data = contract.methods.createViewPoint(...deserializeViewpoint(payload)).encodeABI();
+    const txHash = await window.platon.request({
+      method: 'platon_sendTransaction',
+      params: [{
+        data,
+        from: window.platon.selectedAddress,
+        to: contract.options.address,
+      }],
+    });
+    const result = await waitForTransactionReceipt(txHash);
+    return next({ ...action, payload: result });
+  }
+  if (includes(type)([
+    LIKE,
+    LIKE_VIEWPOINT,
+    DISLIKE,
+    DISLIKE_VIEWPOINT,
+    CANCEL_LIKE,
+    CANCEL_LIKE_VIEWPOINT,
+    CANCEL_DISLIKE,
+    CANCEL_DISLIKE_VIEWPOINT,
+  ])) {
+    const data = contract.methods[methodMap[type]](payload).encodeABI();
     const txHash = await window.platon.request({
       method: 'platon_sendTransaction',
       params: [{
