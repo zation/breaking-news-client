@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { number, bool } from 'prop-types';
+import { string, bool } from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import Layout from 'shared/components/layout';
 import useStyles from 'isomorphic-style-loader/useStyles';
@@ -45,6 +45,7 @@ const result = ({ newsId, isSupport }) => {
       if (newsId) {
         const { payload: { status } } = await dispatch(createViewpoint(finalValue));
         if (status) {
+          await dispatch(getAll());
           return dispatch(push(`/${newsId}`));
         }
         return setSubmitting(false);
@@ -117,7 +118,7 @@ const result = ({ newsId, isSupport }) => {
 result.displayName = __filename;
 
 result.propTypes = {
-  newsId: number,
+  newsId: string,
   isSupport: bool,
 };
 

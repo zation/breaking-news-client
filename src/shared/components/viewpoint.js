@@ -102,7 +102,7 @@ const result = ({
         <div>
           <span className={s.Address}>{author.address}</span>
           <span className={s.lighten}>Created</span>: {time()(createdAt)}
-          {showTag && <Tag className={s.Tag} color={isSupport ? 'success' : 'warning'}>{isSupport ? '支持' : '反对'}</Tag>}
+          {showTag && <Tag className={s.Tag} color={isSupport ? 'blue' : 'error'}>{isSupport ? '支持' : '反对'}</Tag>}
         </div>
         {title && (
           <div className={s.Title} onClick={onTitleClick}>{title}</div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { number } from 'prop-types';
+import { string } from 'prop-types';
 import { useSelector } from 'react-redux';
 import Layout from 'shared/components/layout';
 import useStyles from 'isomorphic-style-loader/useStyles';
@@ -50,7 +50,7 @@ const result = ({ newsId }) => {
 result.displayName = __filename;
 
 result.propTypes = {
-  newsId: number.isRequired,
+  newsId: string.isRequired,
 };
 
 export default result;
