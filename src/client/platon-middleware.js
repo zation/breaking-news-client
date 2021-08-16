@@ -35,8 +35,8 @@ web3.platon.subscribe('logs', {
     return;
   }
   const receipt = await web3.platon.getTransactionReceipt(result.transactionHash);
-  if (receipt) {
-    const promise = newsPromiseMap.get(result.transactionHash);
+  const promise = newsPromiseMap.get(result.transactionHash);
+  if (receipt && promise) {
     newsPromiseMap.remove(result.transactionHash);
     if (receipt.status) {
       const newsId = web3.platon.abi.decodeParameters([{ type: 'uint[]' }], result.data.replace('0x', ''))[0];
