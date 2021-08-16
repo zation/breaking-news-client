@@ -5,8 +5,7 @@ import Layout from 'shared/components/layout';
 import useStyles from 'isomorphic-style-loader/useStyles';
 import { Row, Col, Input, Form, Button } from 'antd';
 import Uploader from 'shared/components/uploader';
-import { map, flow, prop, filter, first, propEq } from 'lodash/fp';
-import { sortByDateDesc } from 'shared/utils/sort';
+import { map, flow, prop } from 'lodash/fp';
 import { goBack, push } from 'relient/actions/history';
 import { create as createNews, createViewpoint, getAll } from 'shared/actions/news';
 import selector from './create-selector';
@@ -50,17 +49,9 @@ const result = ({ newsId, isSupport }) => {
         }
         return setSubmitting(false);
       }
-      const { payload: { status } } = await dispatch(createNews(finalValue));
-      if (status) {
-        const { payload: allNews } = await dispatch(getAll());
-        const newNewsId = flow(
-          filter(propEq('authorAddress', currentUserAddress)),
-          sortByDateDesc('createdAt'),
-          first,
-          prop('id'),
-        )(allNews);
-        return dispatch(push(`/${newNewsId}`));
-      }
+      const { payload: newNewsId } = await dispatch(createNews(finalValue));
+      await dispatch(getAll());
+      return dispatch(push(`/${newNewsId}`));
     } catch (e) {
       console.error(e);
       setSubmitting(false);

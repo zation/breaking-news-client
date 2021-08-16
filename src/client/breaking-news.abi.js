@@ -1,43 +1,9 @@
 export default [
   {
-    constant: false,
-    input: [],
-    name: 'init',
-    output: 'void',
-    type: 'Action',
-  },
-  {
-    constant: false,
-    input: [
-      {
-        name: 'newsID',
-        type: 'uint128',
-      },
-    ],
-    name: 'likeNews',
-    output: 'string',
-    type: 'Action',
-  },
-  {
-    baseclass: [],
-    fields: [
-      {
-        name: 'UserAddress',
-        type: 'string',
-      },
-      {
-        name: 'UserCredibility',
-        type: 'int16',
-      },
-    ],
-    name: 'UserInfo',
-    type: 'struct',
-  },
-  {
     constant: true,
     input: [],
-    name: 'getUsers',
-    output: 'list<UserInfo>',
+    name: 'getOwner',
+    output: 'string',
     type: 'Action',
   },
   {
@@ -53,10 +19,26 @@ export default [
     type: 'Action',
   },
   {
-    constant: true,
+    anonymous: false,
+    input: [
+      {
+        name: 'topic',
+        type: 'string',
+      },
+      {
+        name: 'arg1',
+        type: 'uint128',
+      },
+    ],
+    name: 'AddNews',
+    topic: 1,
+    type: 'Event',
+  },
+  {
+    constant: false,
     input: [],
-    name: 'getOwner',
-    output: 'string',
+    name: 'init',
+    output: 'void',
     type: 'Action',
   },
   {
@@ -109,6 +91,28 @@ export default [
     ],
     name: 'createViewPoint',
     output: 'string',
+    type: 'Action',
+  },
+  {
+    baseclass: [],
+    fields: [
+      {
+        name: 'UserAddress',
+        type: 'string',
+      },
+      {
+        name: 'UserCredibility',
+        type: 'int16',
+      },
+    ],
+    name: 'UserInfo',
+    type: 'struct',
+  },
+  {
+    constant: true,
+    input: [],
+    name: 'getUsers',
+    output: 'list<UserInfo>',
     type: 'Action',
   },
   {
@@ -218,6 +222,18 @@ export default [
     input: [],
     name: 'getNews',
     output: 'list<News>',
+    type: 'Action',
+  },
+  {
+    constant: false,
+    input: [
+      {
+        name: 'newsID',
+        type: 'uint128',
+      },
+    ],
+    name: 'likeNews',
+    output: 'string',
     type: 'Action',
   },
   {

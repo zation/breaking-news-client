@@ -17,12 +17,36 @@ import { map, includes } from 'lodash/fp';
 import abi from './breaking-news.abi';
 
 const web3 = new Web3('ws://47.241.98.219:6790');
+const newsPromiseMap = new Map();
 
 const contract = new web3.platon.Contract(
   abi,
-  'lat1xezn8pp6vfaju8f47zh4dcxgt0nmqqhj9x703e',
+  'lat13uqj8py6hul8y37t90wqh3lpgpxgcnk8xp278q',
   { vmType: 1 },
 );
+const hex = web3.utils.toHex('AddNews');
+const topic = web3.utils.leftPad(hex, 64);
+web3.platon.subscribe('logs', {
+  address: 'lat13uqj8py6hul8y37t90wqh3lpgpxgcnk8xp278q',
+  topics: [topic],
+}, async (error, result) => {
+  if (error) {
+    console.error(error);
+    return;
+  }
+  const receipt = await web3.platon.getTransactionReceipt(result.transactionHash);
+  if (receipt) {
+    if (receipt.status) {
+      const newsId = web3.platon.abi.decodeParameters([{ type: 'uint[]' }], result.data.replace('0x', ''))[0];
+      newsPromiseMap.get(result.transactionHash).resolve(newsId);
+    } else {
+      newsPromiseMap.get(result.transactionHash).reject();
+    }
+  }
+});
+const waitForNewsTransactionReceipt = (txHash) => new Promise((resolve, reject) => {
+  newsPromiseMap.set(txHash, { resolve, reject });
+});
 
 const waitForTransactionReceipt = (txHash) => new Promise((resolve, reject) => {
   const interval = setInterval(() => {
@@ -153,7 +177,7 @@ export default () => (next) => async (action) => {
         to: contract.options.address,
       }],
     });
-    const result = await waitForTransactionReceipt(txHash);
+    const result = await waitForNewsTransactionReceipt(txHash);
     return next({ ...action, payload: result });
   }
   if (type === CREATE_VIEWPOINT) {
