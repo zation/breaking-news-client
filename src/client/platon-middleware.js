@@ -36,11 +36,13 @@ web3.platon.subscribe('logs', {
   }
   const receipt = await web3.platon.getTransactionReceipt(result.transactionHash);
   if (receipt) {
+    const promise = newsPromiseMap.get(result.transactionHash);
+    newsPromiseMap.remove(result.transactionHash);
     if (receipt.status) {
       const newsId = web3.platon.abi.decodeParameters([{ type: 'uint[]' }], result.data.replace('0x', ''))[0];
-      newsPromiseMap.get(result.transactionHash).resolve(newsId);
+      promise.resolve(newsId);
     } else {
-      newsPromiseMap.get(result.transactionHash).reject();
+      promise.reject();
     }
   }
 });
