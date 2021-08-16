@@ -1,47 +1,6 @@
 export default [
   {
     constant: false,
-    input: [],
-    name: 'init',
-    output: 'void',
-    type: 'Action',
-  },
-  {
-    constant: false,
-    input: [
-      {
-        name: 'newsID',
-        type: 'uint128',
-      },
-    ],
-    name: 'likeNews',
-    output: 'string',
-    type: 'Action',
-  },
-  {
-    baseclass: [],
-    fields: [
-      {
-        name: 'UserAddress',
-        type: 'string',
-      },
-      {
-        name: 'UserCredibility',
-        type: 'int16',
-      },
-    ],
-    name: 'UserInfo',
-    type: 'struct',
-  },
-  {
-    constant: true,
-    input: [],
-    name: 'getUsers',
-    output: 'list<UserInfo>',
-    type: 'Action',
-  },
-  {
-    constant: false,
     input: [
       {
         name: 'vpID',
@@ -50,65 +9,6 @@ export default [
     ],
     name: 'clearViewpoint',
     output: 'void',
-    type: 'Action',
-  },
-  {
-    constant: true,
-    input: [],
-    name: 'getOwner',
-    output: 'string',
-    type: 'Action',
-  },
-  {
-    constant: false,
-    input: [
-      {
-        name: 'title',
-        type: 'string',
-      },
-      {
-        name: 'content',
-        type: 'string',
-      },
-      {
-        name: 'image',
-        type: 'string[]',
-      },
-      {
-        name: 'createTime',
-        type: 'string',
-      },
-    ],
-    name: 'createNews',
-    output: 'string',
-    type: 'Action',
-  },
-  {
-    constant: false,
-    input: [
-      {
-        name: 'ID',
-        type: 'uint128',
-      },
-      {
-        name: 'content',
-        type: 'string',
-      },
-      {
-        name: 'image',
-        type: 'string[]',
-      },
-      {
-        name: 'isSupported',
-        type: 'bool',
-      },
-      {
-        name: 'createTime',
-        type: 'string',
-      },
-    ],
-    name: 'createViewPoint',
-    output: 'string',
     type: 'Action',
   },
   {
@@ -214,10 +114,126 @@ export default [
     type: 'struct',
   },
   {
+    anonymous: false,
+    input: [
+      {
+        name: 'topic',
+        type: 'string',
+      },
+      {
+        name: 'arg1',
+        type: 'News',
+      },
+    ],
+    name: 'AddNews',
+    topic: 1,
+    type: 'Event',
+  },
+  {
+    constant: false,
+    input: [],
+    name: 'init',
+    output: 'void',
+    type: 'Action',
+  },
+  {
+    constant: true,
+    input: [],
+    name: 'getOwner',
+    output: 'string',
+    type: 'Action',
+  },
+  {
+    constant: false,
+    input: [
+      {
+        name: 'title',
+        type: 'string',
+      },
+      {
+        name: 'content',
+        type: 'string',
+      },
+      {
+        name: 'image',
+        type: 'string[]',
+      },
+      {
+        name: 'createTime',
+        type: 'string',
+      },
+    ],
+    name: 'createNews',
+    output: 'string',
+    type: 'Action',
+  },
+  {
+    constant: false,
+    input: [
+      {
+        name: 'ID',
+        type: 'uint128',
+      },
+      {
+        name: 'content',
+        type: 'string',
+      },
+      {
+        name: 'image',
+        type: 'string[]',
+      },
+      {
+        name: 'isSupported',
+        type: 'bool',
+      },
+      {
+        name: 'createTime',
+        type: 'string',
+      },
+    ],
+    name: 'createViewPoint',
+    output: 'string',
+    type: 'Action',
+  },
+  {
+    baseclass: [],
+    fields: [
+      {
+        name: 'UserAddress',
+        type: 'string',
+      },
+      {
+        name: 'UserCredibility',
+        type: 'int16',
+      },
+    ],
+    name: 'UserInfo',
+    type: 'struct',
+  },
+  {
+    constant: true,
+    input: [],
+    name: 'getUsers',
+    output: 'list<UserInfo>',
+    type: 'Action',
+  },
+  {
     constant: true,
     input: [],
     name: 'getNews',
     output: 'list<News>',
+    type: 'Action',
+  },
+  {
+    constant: false,
+    input: [
+      {
+        name: 'newsID',
+        type: 'uint128',
+      },
+    ],
+    name: 'likeNews',
+    output: 'string',
     type: 'Action',
   },
   {

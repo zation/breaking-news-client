@@ -15,14 +15,63 @@ import {
 import Web3 from 'libs/web3.min';
 import { map, includes } from 'lodash/fp';
 import abi from './breaking-news.abi';
+// import { news, users } from './fake-data';
 
 const web3 = new Web3('ws://47.241.98.219:6790');
 
 const contract = new web3.platon.Contract(
   abi,
-  'lat1xezn8pp6vfaju8f47zh4dcxgt0nmqqhj9x703e',
+  'lat1ufhrh5zwx84q6zeh5t7jvpp0sw4e7uzmhagchw',
   { vmType: 1 },
 );
+const hex = web3.utils.toHex('AddNews');
+const topic = web3.utils.leftPad(hex, 64);
+const decodeData = (data) => {
+  console.log(data);
+  try {
+    return web3.platon.abi.decodeParameters([{ type: 'News' }], data);
+  } catch (e) {
+    console.error(e);
+  }
+  try {
+    return web3.platon.abi.decodeParameters(['News'], data);
+  } catch (e) {
+    console.error(e);
+  }
+  try {
+    return web3.platon.abi.decodeParameter('News', data);
+  } catch (e) {
+    console.error(e);
+  }
+}
+web3.platon.subscribe('logs', {
+  address: 'lat1ufhrh5zwx84q6zeh5t7jvpp0sw4e7uzmhagchw',
+  topics: [topic],
+}, (error, result) => {
+  if (error) {
+    console.error(error);
+    return;
+  }
+  console.log(result);
+  web3.platon.getTransactionReceipt(result.transactionHash, (error1, result1) => {
+    if (error1) {
+      console.error(error1)
+    } else if (result1) {
+      console.log(result1)
+    }
+  });
+})
+// contract
+//   .events
+//   .AddNews()
+//   .on('data', (event) => {
+//     console.log('in data')
+//     console.log(event);
+//   })
+//   .on('error', (error) => {
+//     console.log('in error')
+//     console.log(error)
+//   })
 
 const waitForTransactionReceipt = (txHash) => new Promise((resolve, reject) => {
   const interval = setInterval(() => {
