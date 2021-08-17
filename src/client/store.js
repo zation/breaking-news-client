@@ -8,7 +8,7 @@ import fetch from 'isomorphic-fetch/fetch-npm-browserify';
 import fetchMiddleware from 'shared/middlewares/fetch';
 import pushMiddleware from 'relient/middlewares/push';
 import getConfig from 'relient/config';
-import platonMiddleware from './platon-middleware';
+import platonMiddleware from './platon/middleware';
 import history from './history';
 
 const { __REDUX_DEVTOOLS_EXTENSION__, __INITIAL_STATE__ = {} } = global;
