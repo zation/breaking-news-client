@@ -14,21 +14,27 @@ import {
 } from 'shared/actions/news';
 import Web3 from 'libs/web3.min';
 import { map, includes } from 'lodash/fp';
+import { decode } from 'micro-rlp';
+import buffer from 'buffer/';
 import abi from './breaking-news.abi';
+import {
+  deserializeViewpoint,
+  serializeNews,
+  deserializeNews,
+  serializeUser,
+} from './serializer';
 
 const web3 = new Web3('ws://47.241.98.219:6790');
 const newsPromiseMap = new Map();
-
 const contract = new web3.platon.Contract(
   abi,
-  'lat13uqj8py6hul8y37t90wqh3lpgpxgcnk8xp278q',
+  'lat1af6hck97pxzsc8wekx42vx6r3mfc25t65szakz',
   { vmType: 1 },
 );
-const hex = web3.utils.toHex('AddNews');
-const topic = web3.utils.leftPad(hex, 64);
+const addNewsTopic = web3.utils.leftPad(web3.utils.toHex('AddNews'), 64);
 web3.platon.subscribe('logs', {
-  address: 'lat13uqj8py6hul8y37t90wqh3lpgpxgcnk8xp278q',
-  topics: [topic],
+  address: contract.options.address,
+  topics: [addNewsTopic],
 }, async (error, result) => {
   if (error) {
     console.error(error);
@@ -37,113 +43,45 @@ web3.platon.subscribe('logs', {
   const receipt = await web3.platon.getTransactionReceipt(result.transactionHash);
   const promise = newsPromiseMap.get(result.transactionHash);
   if (receipt && promise) {
-    newsPromiseMap.remove(result.transactionHash);
+    newsPromiseMap.delete(result.transactionHash);
     if (receipt.status) {
-      const newsId = web3.platon.abi.decodeParameters([{ type: 'uint[]' }], result.data.replace('0x', ''))[0];
-      promise.resolve(newsId);
+      const decodedData = decode(buffer.Buffer.from(result.data.replace('0x', ''), 'hex'));
+      const news = web3.platon.abi.decodeParameters([{ type: 'News' }], decodedData[0]);
+      promise.resolve(serializeNews(news));
     } else {
       promise.reject();
     }
   }
 });
-const waitForNewsTransactionReceipt = (txHash) => new Promise((resolve, reject) => {
-  newsPromiseMap.set(txHash, { resolve, reject });
-});
-
-const waitForTransactionReceipt = (txHash) => new Promise((resolve, reject) => {
-  const interval = setInterval(() => {
-    web3.platon.getTransactionReceipt(txHash, (error, result) => {
-      if (error) {
-        reject(interval);
-        clearInterval(interval);
-      } else if (result) {
-        resolve(result);
-        clearInterval(interval);
+const otherTopics = map((event) => web3.utils.leftPad(web3.utils.toHex(event), 64))([
+  'BNMessage',
+]);
+web3.platon.subscribe('logs', {
+  address: contract.options.address,
+  topics: otherTopics,
+}, async (error, result) => {
+  if (error) {
+    console.error(error);
+    return;
+  }
+  const receipt = await web3.platon.getTransactionReceipt(result.transactionHash);
+  const promise = newsPromiseMap.get(result.transactionHash);
+  if (receipt && promise) {
+    newsPromiseMap.delete(result.transactionHash);
+    if (receipt.status) {
+      const resultString = web3.platon.abi.decodeParameters([{ type: 'string' }], result.data.replace('0x', ''));
+      if (resultString === 'success') {
+        promise.resolve();
+      } else {
+        promise.reject(resultString);
       }
-    });
-  }, 500);
+    } else {
+      promise.reject();
+    }
+  }
 });
-
-const serializeViewpoint = ([
-  isSupport,
-  id,
-  newsId,
-  authorAddress,
-  content,
-  images,
-  likeAddresses,
-  dislikeAddresses,
-  blockNumber,
-  createdAt,
-]) => ({
-  isSupport,
-  id,
-  newsId,
-  authorAddress,
-  content,
-  images,
-  likeAddresses,
-  dislikeAddresses,
-  blockNumber,
-  createdAt,
-});
-
-const deserializeViewpoint = ({
-  newsId,
-  content,
-  images,
-  isSupport,
-  createdAt,
-}) => [
-  newsId,
-  content,
-  images,
-  isSupport,
-  createdAt,
-];
-
-const serializeNews = ([
-  title,
-  id,
-  authorAddress,
-  content,
-  images,
-  likeAddresses,
-  dislikeAddresses,
-  blockNumber,
-  createdAt,
-  viewpoints,
-]) => ({
-  title,
-  id,
-  authorAddress,
-  content,
-  images,
-  likeAddresses,
-  dislikeAddresses,
-  blockNumber,
-  createdAt,
-  viewpoints: map(serializeViewpoint)(viewpoints),
-});
-
-const deserializeNews = ({
-  title,
-  content,
-  images,
-  createdAt,
-}) => [
-  title,
-  content,
-  images,
-  createdAt,
-];
-
-const serializeUser = ([
-  address,
-  credibility,
-]) => ({
-  address,
-  credibility,
+const waitForTransactionResult = (txHash) => new Promise((resolve, reject) => {
+  newsPromiseMap.set(txHash, { resolve, reject });
 });
 
 const methodMap = {
@@ -179,7 +117,7 @@ export default () => (next) => async (action) => {
         to: contract.options.address,
       }],
     });
-    const result = await waitForNewsTransactionReceipt(txHash);
+    const result = await waitForTransactionResult(txHash);
     return next({ ...action, payload: result });
   }
   if (type === CREATE_VIEWPOINT) {
@@ -192,7 +130,7 @@ export default () => (next) => async (action) => {
         to: contract.options.address,
       }],
     });
-    const result = await waitForTransactionReceipt(txHash);
+    const result = await waitForTransactionResult(txHash);
     return next({ ...action, payload: result });
   }
   if (includes(type)([
@@ -214,7 +152,7 @@ export default () => (next) => async (action) => {
         to: contract.options.address,
       }],
     });
-    const result = await waitForTransactionReceipt(txHash);
+    const result = await waitForTransactionResult(txHash);
     return next({ ...action, payload: result });
   }
   return next(action);

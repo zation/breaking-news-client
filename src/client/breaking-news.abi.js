@@ -1,12 +1,5 @@
 export default [
   {
-    constant: true,
-    input: [],
-    name: 'getOwner',
-    output: 'string',
-    type: 'Action',
-  },
-  {
     constant: false,
     input: [
       {
@@ -16,81 +9,6 @@ export default [
     ],
     name: 'clearViewpoint',
     output: 'void',
-    type: 'Action',
-  },
-  {
-    anonymous: false,
-    input: [
-      {
-        name: 'topic',
-        type: 'string',
-      },
-      {
-        name: 'arg1',
-        type: 'uint128',
-      },
-    ],
-    name: 'AddNews',
-    topic: 1,
-    type: 'Event',
-  },
-  {
-    constant: false,
-    input: [],
-    name: 'init',
-    output: 'void',
-    type: 'Action',
-  },
-  {
-    constant: false,
-    input: [
-      {
-        name: 'title',
-        type: 'string',
-      },
-      {
-        name: 'content',
-        type: 'string',
-      },
-      {
-        name: 'image',
-        type: 'string[]',
-      },
-      {
-        name: 'createTime',
-        type: 'string',
-      },
-    ],
-    name: 'createNews',
-    output: 'string',
-    type: 'Action',
-  },
-  {
-    constant: false,
-    input: [
-      {
-        name: 'ID',
-        type: 'uint128',
-      },
-      {
-        name: 'content',
-        type: 'string',
-      },
-      {
-        name: 'image',
-        type: 'string[]',
-      },
-      {
-        name: 'isSupported',
-        type: 'bool',
-      },
-      {
-        name: 'createTime',
-        type: 'string',
-      },
-    ],
-    name: 'createViewPoint',
-    output: 'string',
     type: 'Action',
   },
   {
@@ -116,6 +34,13 @@ export default [
     type: 'Action',
   },
   {
+    constant: true,
+    input: [],
+    name: 'getOwner',
+    output: 'string',
+    type: 'Action',
+  },
+  {
     baseclass: [],
     fields: [
       {
@@ -124,7 +49,7 @@ export default [
       },
       {
         name: 'ViewpointID',
-        type: 'uint128',
+        type: 'uint64',
       },
       {
         name: 'NewID',
@@ -218,6 +143,109 @@ export default [
     type: 'struct',
   },
   {
+    anonymous: false,
+    input: [
+      {
+        name: 'topic',
+        type: 'string',
+      },
+      {
+        name: 'arg1',
+        type: 'News',
+      },
+    ],
+    name: 'AddNews',
+    topic: 1,
+    type: 'Event',
+  },
+  {
+    anonymous: false,
+    input: [
+      {
+        name: 'topic',
+        type: 'string',
+      },
+      {
+        name: 'arg1',
+        type: 'string',
+      },
+    ],
+    name: 'BNMessage',
+    topic: 1,
+    type: 'Event',
+  },
+  {
+    constant: false,
+    input: [],
+    name: 'init',
+    output: 'void',
+    type: 'Action',
+  },
+  {
+    constant: false,
+    input: [
+      {
+        name: 'title',
+        type: 'string',
+      },
+      {
+        name: 'content',
+        type: 'string',
+      },
+      {
+        name: 'image',
+        type: 'string[]',
+      },
+      {
+        name: 'createTime',
+        type: 'string',
+      },
+    ],
+    name: 'createNews',
+    output: 'string',
+    type: 'Action',
+  },
+  {
+    constant: false,
+    input: [
+      {
+        name: 'ID',
+        type: 'uint128',
+      },
+      {
+        name: 'content',
+        type: 'string',
+      },
+      {
+        name: 'image',
+        type: 'string[]',
+      },
+      {
+        name: 'isSupported',
+        type: 'bool',
+      },
+      {
+        name: 'createTime',
+        type: 'string',
+      },
+    ],
+    name: 'createViewPoint',
+    output: 'string',
+    type: 'Action',
+  },
+  {
+    constant: false,
+    input: [
+      {
+        name: 'newsID',
+        type: 'uint128',
+      },
+    ],
+    name: 'clearNews',
+    output: 'void',
+    type: 'Action',
+  },
+  {
     constant: true,
     input: [],
     name: 'getNews',
@@ -280,7 +308,7 @@ export default [
         type: 'uint128',
       },
     ],
-    name: 'cancellikeViewpoint',
+    name: 'likeViewpoint',
     output: 'string',
     type: 'Action',
   },
@@ -292,7 +320,7 @@ export default [
         type: 'uint128',
       },
     ],
-    name: 'likeViewpoint',
+    name: 'cancellikeViewpoint',
     output: 'string',
     type: 'Action',
   },
@@ -329,14 +357,9 @@ export default [
   },
   {
     constant: false,
-    input: [
-      {
-        name: 'newsID',
-        type: 'uint128',
-      },
-    ],
-    name: 'clearNews',
-    output: 'void',
+    input: [],
+    name: 'checkNews',
+    output: 'bool',
     type: 'Action',
   },
 ];

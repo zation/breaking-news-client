@@ -1996,6 +1996,11 @@ base64-arraybuffer@0.1.4:
   resolved "https://registry.npm.taobao.org/base64-arraybuffer/download/base64-arraybuffer-0.1.4.tgz?cache=0&sync_timestamp=1586263725228&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fbase64-arraybuffer%2Fdownload%2Fbase64-arraybuffer-0.1.4.tgz#9818c79e059b1355f97e0428a017c838e90ba812"
   integrity sha1-mBjHngWbE1X5fgQooBfIOOkLqBI=
 
+base64-js@^1.3.1:
+  version "1.5.1"
+  resolved "https://registry.nlark.com/base64-js/download/base64-js-1.5.1.tgz#1b1b440160a5bf7ad40b650f095963481903930a"
+  integrity sha1-GxtEAWClv3rUC2UPCVljSBkDkwo=
+
 base64id@2.0.0:
   version "2.0.0"
   resolved "https://registry.npm.taobao.org/base64id/download/base64id-2.0.0.tgz#2770ac6bc47d312af97a8bf9a634342e0cd25cb6"
@@ -2216,6 +2221,14 @@ buffer-from@^1.0.0:
   version "1.1.2"
   resolved "https://registry.nlark.com/buffer-from/download/buffer-from-1.1.2.tgz?cache=0&sync_timestamp=1627578361955&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fbuffer-from%2Fdownload%2Fbuffer-from-1.1.2.tgz#2b146a6fd72e80b4f55d255f35ed59a3a9a41bd5"
   integrity sha1-KxRqb9cugLT1XSVfNe1Zo6mkG9U=
+
+buffer@^6.0.3:
+  version "6.0.3"
+  resolved "https://registry.nlark.com/buffer/download/buffer-6.0.3.tgz#2ace578459cc8fbe2a70aaa8f52ee63b6a74c6c6"
+  integrity sha1-Ks5XhFnMj74qcKqo9S7mO2p0xsY=
+  dependencies:
+    base64-js "^1.3.1"
+    ieee754 "^1.2.1"
 
 bytes@3.0.0:
   version "3.0.0"
@@ -4536,6 +4549,11 @@ icss-utils@^5.0.0, icss-utils@^5.1.0:
   resolved "https://registry.nlark.com/icss-utils/download/icss-utils-5.1.0.tgz#c6be6858abd013d768e98366ae47e25d5887b1ae"
   integrity sha1-xr5oWKvQE9do6YNmrkfiXViHsa4=
 
+ieee754@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.nlark.com/ieee754/download/ieee754-1.2.1.tgz#8eb7a10a63fff25d15a57b001586d177d1b0d352"
+  integrity sha1-jrehCmP/8l0VpXsAFYbRd9Gw01I=
+
 ignore@^4.0.6:
   version "4.0.6"
   resolved "https://registry.npm.taobao.org/ignore/download/ignore-4.0.6.tgz#750e3db5862087b4737ebac8207ffd1ef27b25fc"
@@ -5585,6 +5603,11 @@ methods@~1.1.2:
   version "1.1.2"
   resolved "https://registry.npm.taobao.org/methods/download/methods-1.1.2.tgz#5529a4d67654134edcc5266656835b0f851afcee"
   integrity sha1-VSmk1nZUE07cxSZmVoNbD4Ua/O4=
+
+micro-rlp@^2.2.9:
+  version "2.2.9"
+  resolved "https://registry.nlark.com/micro-rlp/download/micro-rlp-2.2.9.tgz#ecb6e4616112ea9ebbb50160d31cb9902d0ba5b1"
+  integrity sha1-7LbkYWES6p67tQFg0xy5kC0LpbE=
 
 microevent.ts@~0.1.1:
   version "0.1.1"

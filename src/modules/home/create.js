@@ -42,14 +42,11 @@ const result = ({ newsId, isSupport }) => {
         newsId,
       };
       if (newsId) {
-        const { payload: { status } } = await dispatch(createViewpoint(finalValue));
-        if (status) {
-          await dispatch(getAll());
-          return dispatch(push(`/${newsId}`));
-        }
-        return setSubmitting(false);
+        await dispatch(createViewpoint(finalValue));
+        await dispatch(getAll());
+        return dispatch(push(`/${newsId}`));
       }
-      const { payload: newNewsId } = await dispatch(createNews(finalValue));
+      const { payload: { id: newNewsId } } = await dispatch(createNews(finalValue));
       await dispatch(getAll());
       return dispatch(push(`/${newNewsId}`));
     } catch (e) {
