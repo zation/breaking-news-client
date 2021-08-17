@@ -2,6 +2,7 @@ import Web3 from 'libs/web3.min';
 import { map } from 'lodash/fp';
 import { decode } from 'micro-rlp';
 import buffer from 'buffer/';
+import { message } from 'antd';
 import abi from './breaking-news.abi';
 import {
   serializeNews,
@@ -63,6 +64,7 @@ export const start = () => {
         if (resultString === 'success') {
           promise.resolve();
         } else {
+          message.error(resultString);
           promise.reject(resultString);
         }
       } else {
