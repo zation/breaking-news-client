@@ -1,4 +1,4 @@
-import Web3 from 'libs/web3.min';
+import Web3 from 'libs/web3';
 import { map } from 'lodash/fp';
 import { decode } from 'micro-rlp';
 import buffer from 'buffer/';
@@ -8,11 +8,11 @@ import {
   serializeNews,
 } from './serializer';
 
-const web3 = new Web3('ws://47.241.98.219:6790');
+const web3 = new Web3('ws://35.247.155.162:6790');
 const newsPromiseMap = new Map();
 export const contract = new web3.platon.Contract(
   abi,
-  'lat1af6hck97pxzsc8wekx42vx6r3mfc25t65szakz',
+  'lat1mecuvzkz7ky8luef0gyj7sk5m0uvucygnfrjyd',
   { vmType: 1 },
 );
 const addNewsTopic = web3.utils.leftPad(web3.utils.toHex('AddNews'), 64);

@@ -15,35 +15,6 @@ export default [
     baseclass: [],
     fields: [
       {
-        name: 'UserAddress',
-        type: 'string',
-      },
-      {
-        name: 'UserCredibility',
-        type: 'int16',
-      },
-    ],
-    name: 'UserInfo',
-    type: 'struct',
-  },
-  {
-    constant: true,
-    input: [],
-    name: 'getUsers',
-    output: 'list<UserInfo>',
-    type: 'Action',
-  },
-  {
-    constant: true,
-    input: [],
-    name: 'getOwner',
-    output: 'string',
-    type: 'Action',
-  },
-  {
-    baseclass: [],
-    fields: [
-      {
         name: 'point',
         type: 'bool',
       },
@@ -85,7 +56,23 @@ export default [
       },
       {
         name: 'Credibility',
-        type: 'int16',
+        type: 'int32',
+      },
+      {
+        name: 'Cv_N',
+        type: 'int32',
+      },
+      {
+        name: 'Cv_up_down',
+        type: 'int32',
+      },
+      {
+        name: 'Cv_author',
+        type: 'int32',
+      },
+      {
+        name: 'delta_Cv',
+        type: 'int32',
       },
     ],
     name: 'Viewpoint',
@@ -136,7 +123,23 @@ export default [
       },
       {
         name: 'Credibility',
-        type: 'int16',
+        type: 'int32',
+      },
+      {
+        name: 'Cn_V',
+        type: 'int32',
+      },
+      {
+        name: 'Cn_up_down',
+        type: 'int32',
+      },
+      {
+        name: 'Cn_author',
+        type: 'int32',
+      },
+      {
+        name: 'delta_Cn',
+        type: 'int32',
       },
     ],
     name: 'News',
@@ -179,6 +182,13 @@ export default [
     input: [],
     name: 'init',
     output: 'void',
+    type: 'Action',
+  },
+  {
+    constant: true,
+    input: [],
+    name: 'getOwner',
+    output: 'string',
     type: 'Action',
   },
   {
@@ -234,15 +244,41 @@ export default [
     type: 'Action',
   },
   {
-    constant: false,
-    input: [
+    baseclass: [],
+    fields: [
       {
-        name: 'newsID',
-        type: 'uint128',
+        name: 'UserAddress',
+        type: 'string',
+      },
+      {
+        name: 'UserCredibility',
+        type: 'int32',
+      },
+      {
+        name: 'Cu_N_author',
+        type: 'int32',
+      },
+      {
+        name: 'Cu_V_author',
+        type: 'int32',
+      },
+      {
+        name: 'Cu_N_up_down',
+        type: 'int32',
+      },
+      {
+        name: 'Cu_V_up_down',
+        type: 'int32',
       },
     ],
-    name: 'clearNews',
-    output: 'void',
+    name: 'UserInfo',
+    type: 'struct',
+  },
+  {
+    constant: true,
+    input: [],
+    name: 'getUsers',
+    output: 'list<UserInfo>',
     type: 'Action',
   },
   {
@@ -360,6 +396,18 @@ export default [
     input: [],
     name: 'checkNews',
     output: 'bool',
+    type: 'Action',
+  },
+  {
+    constant: false,
+    input: [
+      {
+        name: 'newsID',
+        type: 'uint128',
+      },
+    ],
+    name: 'clearNews',
+    output: 'void',
     type: 'Action',
   },
 ];

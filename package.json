@@ -34,7 +34,8 @@
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",
     "relient": "5.2.0",
-    "universal-router": "^9.0.1"
+    "universal-router": "^9.0.1",
+    "util": "^0.12.4"
   },
   "resolutions": {
     "**/react": "^17.0.1",
