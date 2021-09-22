@@ -12,7 +12,7 @@ const web3 = new Web3('ws://35.247.155.162:6790');
 const newsPromiseMap = new Map();
 export const contract = new web3.platon.Contract(
   abi,
-  'lat1mecuvzkz7ky8luef0gyj7sk5m0uvucygnfrjyd',
+  'lat1wa3nzf2akh8kymmhgwa2szzseacgskdqrew34a',
   { vmType: 1 },
 );
 const addNewsTopic = web3.utils.leftPad(web3.utils.toHex('AddNews'), 64);

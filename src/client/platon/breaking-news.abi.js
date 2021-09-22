@@ -1,17 +1,5 @@
 export default [
   {
-    constant: false,
-    input: [
-      {
-        name: 'vpID',
-        type: 'uint128',
-      },
-    ],
-    name: 'clearViewpoint',
-    output: 'void',
-    type: 'Action',
-  },
-  {
     baseclass: [],
     fields: [
       {
@@ -279,6 +267,18 @@ export default [
     input: [],
     name: 'getUsers',
     output: 'list<UserInfo>',
+    type: 'Action',
+  },
+  {
+    constant: false,
+    input: [
+      {
+        name: 'vpID',
+        type: 'uint128',
+      },
+    ],
+    name: 'clearViewpoint',
+    output: 'void',
     type: 'Action',
   },
   {
