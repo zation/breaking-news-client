@@ -1,5 +1,69 @@
 export default [
   {
+    constant: false,
+    input: [
+      {
+        name: 'approverAddress',
+        type: 'string',
+      },
+    ],
+    name: 'setApprover',
+    output: 'void',
+    type: 'Action',
+  },
+  {
+    constant: false,
+    input: [
+      {
+        name: 'vpID',
+        type: 'uint128',
+      },
+    ],
+    name: 'dislikeViewpoint',
+    output: 'string',
+    type: 'Action',
+  },
+  {
+    constant: false,
+    input: [
+      {
+        name: 'title',
+        type: 'string',
+      },
+      {
+        name: 'content',
+        type: 'string',
+      },
+      {
+        name: 'image',
+        type: 'string[]',
+      },
+      {
+        name: 'createTime',
+        type: 'string',
+      },
+      {
+        name: 'authorAddress',
+        type: 'string',
+      },
+    ],
+    name: 'approveNews',
+    output: 'void',
+    type: 'Action',
+  },
+  {
+    constant: false,
+    input: [
+      {
+        name: 'vpID',
+        type: 'uint128',
+      },
+    ],
+    name: 'likeViewpoint',
+    output: 'string',
+    type: 'Action',
+  },
+  {
     baseclass: [],
     fields: [
       {
@@ -8,7 +72,7 @@ export default [
       },
       {
         name: 'ViewpointID',
-        type: 'uint64',
+        type: 'uint128',
       },
       {
         name: 'NewID',
@@ -166,6 +230,13 @@ export default [
     type: 'Event',
   },
   {
+    constant: true,
+    input: [],
+    name: 'getApprover',
+    output: 'string',
+    type: 'Action',
+  },
+  {
     constant: false,
     input: [],
     name: 'init',
@@ -232,6 +303,45 @@ export default [
     type: 'Action',
   },
   {
+    constant: false,
+    input: [
+      {
+        name: 'ID',
+        type: 'uint128',
+      },
+      {
+        name: 'content',
+        type: 'string',
+      },
+      {
+        name: 'image',
+        type: 'string[]',
+      },
+      {
+        name: 'isSupported',
+        type: 'bool',
+      },
+      {
+        name: 'createTime',
+        type: 'string',
+      },
+      {
+        name: 'authorAddress',
+        type: 'string',
+      },
+    ],
+    name: 'approveViewpoint',
+    output: 'void',
+    type: 'Action',
+  },
+  {
+    constant: true,
+    input: [],
+    name: 'getNews',
+    output: 'list<News>',
+    type: 'Action',
+  },
+  {
     baseclass: [],
     fields: [
       {
@@ -267,25 +377,6 @@ export default [
     input: [],
     name: 'getUsers',
     output: 'list<UserInfo>',
-    type: 'Action',
-  },
-  {
-    constant: false,
-    input: [
-      {
-        name: 'vpID',
-        type: 'uint128',
-      },
-    ],
-    name: 'clearViewpoint',
-    output: 'void',
-    type: 'Action',
-  },
-  {
-    constant: true,
-    input: [],
-    name: 'getNews',
-    output: 'list<News>',
     type: 'Action',
   },
   {
@@ -344,31 +435,7 @@ export default [
         type: 'uint128',
       },
     ],
-    name: 'likeViewpoint',
-    output: 'string',
-    type: 'Action',
-  },
-  {
-    constant: false,
-    input: [
-      {
-        name: 'vpID',
-        type: 'uint128',
-      },
-    ],
     name: 'cancellikeViewpoint',
-    output: 'string',
-    type: 'Action',
-  },
-  {
-    constant: false,
-    input: [
-      {
-        name: 'vpID',
-        type: 'uint128',
-      },
-    ],
-    name: 'dislikeViewpoint',
     output: 'string',
     type: 'Action',
   },
@@ -387,15 +454,15 @@ export default [
   {
     constant: false,
     input: [],
-    name: 'clear',
-    output: 'void',
+    name: 'checkNews',
+    output: 'bool',
     type: 'Action',
   },
   {
     constant: false,
     input: [],
-    name: 'checkNews',
-    output: 'bool',
+    name: 'clear',
+    output: 'void',
     type: 'Action',
   },
   {
@@ -407,6 +474,18 @@ export default [
       },
     ],
     name: 'clearNews',
+    output: 'void',
+    type: 'Action',
+  },
+  {
+    constant: false,
+    input: [
+      {
+        name: 'vpID',
+        type: 'uint128',
+      },
+    ],
+    name: 'clearViewpoint',
     output: 'void',
     type: 'Action',
   },
