@@ -21,6 +21,7 @@ import {
 } from './serializer';
 import {
   contract,
+  contractHexAddress,
   waitForTransactionResult,
   start,
 } from './subscribe';
@@ -52,12 +53,12 @@ export default () => (next) => async (action) => {
   }
   if (type === CREATE) {
     const data = contract.methods.createNews(...deserializeNews(payload)).encodeABI();
-    const txHash = await window.platon.request({
-      method: 'platon_sendTransaction',
+    const txHash = await window.ethereum.request({
+      method: 'eth_sendTransaction',
       params: [{
         data,
-        from: window.platon.selectedAddress,
-        to: contract.options.address,
+        from: window.ethereum.selectedAddress,
+        to: contractHexAddress,
       }],
     });
     const result = await waitForTransactionResult(txHash);
@@ -65,12 +66,12 @@ export default () => (next) => async (action) => {
   }
   if (type === CREATE_VIEWPOINT) {
     const data = contract.methods.createViewPoint(...deserializeViewpoint(payload)).encodeABI();
-    const txHash = await window.platon.request({
-      method: 'platon_sendTransaction',
+    const txHash = await window.ethereum.request({
+      method: 'eth_sendTransaction',
       params: [{
         data,
-        from: window.platon.selectedAddress,
-        to: contract.options.address,
+        from: window.ethereum.selectedAddress,
+        to: contractHexAddress,
       }],
     });
     const result = await waitForTransactionResult(txHash);
@@ -87,12 +88,12 @@ export default () => (next) => async (action) => {
     CANCEL_DISLIKE_VIEWPOINT,
   ])) {
     const data = contract.methods[methodMap[type]](payload).encodeABI();
-    const txHash = await window.platon.request({
-      method: 'platon_sendTransaction',
+    const txHash = await window.ethereum.request({
+      method: 'eth_sendTransaction',
       params: [{
         data,
-        from: window.platon.selectedAddress,
-        to: contract.options.address,
+        from: window.ethereum.selectedAddress,
+        to: contractHexAddress,
       }],
     });
     const result = await waitForTransactionResult(txHash);

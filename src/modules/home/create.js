@@ -3,11 +3,11 @@ import { string, bool } from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import Layout from 'shared/components/layout';
 import useStyles from 'isomorphic-style-loader/useStyles';
-import { Row, Col, Input, Form, Button } from 'antd';
+import { Row, Col, Input, Form, Button, message } from 'antd';
 import Uploader from 'shared/components/uploader';
 import { map, flow, prop } from 'lodash/fp';
-import { goBack, push } from 'relient/actions/history';
-import { create as createNews, createViewpoint, getAll } from 'shared/actions/news';
+import { goBack } from 'relient/actions/history';
+import { create as createNews, createViewpoint } from 'shared/actions/news';
 import selector from './create-selector';
 
 import s from './create.less';
@@ -19,7 +19,6 @@ const result = ({ newsId, isSupport }) => {
   useStyles(s);
   const {
     news,
-    currentUserAddress,
   } = useSelector(selector(newsId));
   const dispatch = useDispatch();
   const [submitting, setSubmitting] = useState(false);
@@ -43,18 +42,18 @@ const result = ({ newsId, isSupport }) => {
       };
       if (newsId) {
         await dispatch(createViewpoint(finalValue));
-        await dispatch(getAll());
-        return dispatch(push(`/${newsId}`));
+        message.success('提交成功，请等待审核');
+        return dispatch(goBack());
       }
-      const { payload: { id: newNewsId } } = await dispatch(createNews(finalValue));
-      await dispatch(getAll());
-      return dispatch(push(`/${newNewsId}`));
+      await dispatch(createNews(finalValue));
+      message.success('提交成功，请等待审核');
+      return dispatch(goBack());
     } catch (e) {
       console.error(e);
       setSubmitting(false);
     }
     return null;
-  }, [newsId, isSupport, currentUserAddress]);
+  }, [newsId, isSupport]);
 
   return (
     <Layout className={s.Root}>

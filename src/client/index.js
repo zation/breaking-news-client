@@ -108,9 +108,15 @@ async function onLocationChange({ location, action }) {
         if (isInitialRender) {
           const elem = document.getElementById('css');
           if (elem) elem.parentNode.removeChild(elem);
-          if (window.platon) {
-            const result = await window.platon.request({ method: 'platon_requestAccounts' });
-            store.dispatch(setCurrentUserAddress(result[0]));
+          if (window.ethereum) {
+            await window.ethereum.request({ method: 'eth_requestAccounts' });
+            store.dispatch(setCurrentUserAddress(window.ethereum.selectedAddress));
+            window.ethereum.on('accountsChanged', () => {
+              store.dispatch(setCurrentUserAddress(window.ethereum.selectedAddress));
+            });
+            window.ethereum.on('chainChanged', () => {
+              window.location.reload();
+            });
           }
           store.dispatch(getAllNews());
           store.dispatch(getAllUser());

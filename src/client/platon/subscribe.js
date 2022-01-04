@@ -12,9 +12,10 @@ const web3 = new Web3('ws://35.247.155.162:6790');
 const newsPromiseMap = new Map();
 export const contract = new web3.platon.Contract(
   abi,
-  'lat1r6lr4g723a867ek338s0yf72v0pq5q87gzmvq0',
+  'lat1atwgmfl6qs2l2d7ajnx7uzngvpavfnl9w5llwk',
   { vmType: 1 },
 );
+export const contractHexAddress = '0xeadc8da7fa0415f537dd94cdee0a68607ac4cfe5';
 const addNewsTopic = web3.utils.leftPad(web3.utils.toHex('AddNews'), 64);
 const otherTopics = map((event) => web3.utils.leftPad(web3.utils.toHex(event), 64))([
   'BNMessage',
